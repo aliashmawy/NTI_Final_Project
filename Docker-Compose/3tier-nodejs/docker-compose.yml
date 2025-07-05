@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+
+  backend:
+    image: backend
+    container_name: backend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  frontend:
+    image: frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mongo-data:

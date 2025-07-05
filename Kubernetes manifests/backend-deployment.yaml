@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: 908442807176.dkr.ecr.us-east-1.amazonaws.com/backend:latest
+          ports:
+            - containerPort: 3001
+      #       - name: secrets-store-inline
+      #         mountPath: "/mnt/secrets-store"
+      #         readOnly: true
+      # volumes:
+      #   - name: secrets-store-inline
+      #     csi:
+      #       driver: secrets-store.csi.k8s.io
+      #       readOnly: true
+      #       volumeAttributes:
+      #         secretProviderClass: "docdb-secret"
+
