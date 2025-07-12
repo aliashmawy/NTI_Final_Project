@@ -1,10 +1,10 @@
 ###### AWS_backup_plan ######
-resource "aws_backup_plan" "jenkins" {
-  name = "jenkins_daily_plan"
+resource "aws_backup_plan" "Jenkins" {
+  name = "Jenkins_daily_plan"
 
   rule {
-    rule_name         = "jenkins_daily_rule"
-    target_vault_name = aws_backup_vault.jenkins.name
+    rule_name         = "Jenkins_daily_rule"
+    target_vault_name = aws_backup_vault.Jenkins.name
     #Everyday at 8am
     schedule = "cron(0 8 * * ? *)"
 
@@ -20,7 +20,7 @@ data "aws_kms_key" "by_alias" {
 }
 
 ###### AWS backup vault ######
-resource "aws_backup_vault" "jenkins" {
+resource "aws_backup_vault" "Jenkins" {
   name        = "example_backup_vault"
   kms_key_arn = data.aws_kms_key.by_alias.arn
 
@@ -51,11 +51,11 @@ resource "aws_iam_role_policy_attachment" "backup_ec2" {
 
 resource "aws_backup_selection" "backup_ec2" {
   iam_role_arn = aws_iam_role.backup_ec2.arn
-  name         = "jenkins_backup_selection"
-  plan_id      = aws_backup_plan.jenkins.id
+  name         = "Jenkins_backup_selection"
+  plan_id      = aws_backup_plan.Jenkins.id
 
   resources = [
-    aws_instance.jenkins.arn,
+    aws_instance.Jenkins.arn,
   ]
 }
 

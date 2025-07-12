@@ -28,6 +28,7 @@
       apt:
         name: jenkins
         state: present
+
     - name: Start Jenkins service
       systemd:
         name: jenkins
