@@ -6,7 +6,7 @@ pipeline {
         TF_VERSION = '1.6.0'
         
         // AWS credentials (adjust based on your setup)
-        AWS_DEFAULT_REGION = 'us-eest-1'
+        AWS_DEFAULT_REGION = 'us-east-1'
         AWS_CREDENTIALS = credentials('aws-credentials')
         
 
@@ -18,6 +18,8 @@ pipeline {
         TF_DIR = 'Terraform'
     }
     
+
+    
     stages {
         stage('Checkout') {
             steps {
@@ -25,7 +27,205 @@ pipeline {
                 script {
                     // Check if terraform files changed
                     def changes = sh(
-                        script: "git diff --name-only HEAD~1 HEAD | grep -E '\\\\.(tf|tfvars)\\",
+                        script: "git diff --name-only HEAD~1 HEAD | grep -E '\\\\.(tf|tfvars)\\
+                    
+                    if (changes.isEmpty()) {
+                        echo "No Terraform changes detected. Skipping pipeline."
+                        currentBuild.result = 'SUCCESS'
+                        return
+                    }
+                    
+                    echo "Terraform changes detected:"
+                    echo changes
+                    env.TF_CHANGES = changes
+                }
+            }
+        }
+        
+        stage('Verify Terraform') {
+            when {
+                expression { env.TF_CHANGES != null }
+            }
+            steps {
+                sh 'terraform version'
+            }
+        }
+        
+        stage('Terraform Init') {
+            when {
+                expression { env.TF_CHANGES != null }
+            }
+            steps {
+                dir("${TF_DIR}") {
+                    script {
+                        sh '''
+                            terraform init \
+                                -backend-config="bucket=${TF_STATE_BUCKET}" \
+                                -backend-config="key=${TF_STATE_KEY}" \
+                                -backend-config="region=${TF_STATE_REGION}" \
+                                -input=false
+                        '''
+                        
+                        // Select or create workspace
+                        sh '''
+                            terraform workspace select ${TF_WORKSPACE} || terraform workspace new ${TF_WORKSPACE}
+                        '''
+                    }
+                }
+            }
+        }
+        
+        stage('Terraform Validate') {
+            when {
+                expression { env.TF_CHANGES != null }
+            }
+            steps {
+                dir("${TF_DIR}") {
+                    sh 'terraform validate'
+                }
+            }
+        }
+        
+        stage('Terraform Plan') {
+            when {
+                expression { env.TF_CHANGES != null }
+            }
+            steps {
+                dir("${TF_DIR}") {
+                    script {
+                        // Generate plan file
+                        sh '''
+                            terraform plan \
+                                -input=false \
+                                -out=tfplan \
+                                -detailed-exitcode
+                        '''
+                        
+                        // Show plan in readable format
+                        sh 'terraform show -no-color tfplan > tfplan.txt'
+                        
+                        // Archive the plan
+                        archiveArtifacts artifacts: 'tfplan, tfplan.txt', allowEmptyArchive: false
+                        
+                        // Read plan output for approval step
+                        env.TF_PLAN_OUTPUT = readFile('tfplan.txt')
+                    }
+                }
+            }
+        }
+        
+        stage('Plan Review') {
+            when {
+                expression { env.TF_CHANGES != null }
+            }
+            steps {
+                script {
+                    // Display plan summary
+                    echo "=== TERRAFORM PLAN SUMMARY ==="
+                    echo env.TF_PLAN_OUTPUT
+                    
+                    // For non-production branches, auto-approve
+                    if (env.BRANCH_NAME != 'main') {
+                        echo "Non-production branch detected. Auto-approving plan."
+                        env.PLAN_APPROVED = 'true'
+                    } else {
+                        // For production, require manual approval
+                        try {
+                            timeout(time: 10, unit: 'MINUTES') {
+                                input(
+                                    message: 'Review the Terraform plan above. Proceed with apply?',
+                                    parameters: [
+                                        choice(
+                                            name: 'ACTION',
+                                            choices: ['Apply', 'Abort'],
+                                            description: 'Choose action'
+                                        )
+                                    ]
+                                )
+                            }
+                            env.PLAN_APPROVED = 'true'
+                        } catch (Exception e) {
+                            echo "Plan approval timed out or was aborted"
+                            env.PLAN_APPROVED = 'false'
+                            currentBuild.result = 'ABORTED'
+                        }
+                    }
+                }
+            }
+        }
+        
+        stage('Terraform Apply') {
+            when {
+                allOf {
+                    expression { env.TF_CHANGES != null }
+                    expression { env.PLAN_APPROVED == 'true' }
+                }
+            }
+            steps {
+                dir("${TF_DIR}") {
+                    script {
+                        sh '''
+                            terraform apply \
+                                -input=false \
+                                -auto-approve \
+                                tfplan
+                        '''
+                    }
+                }
+            }
+        }
+        
+        stage('Terraform Output') {
+            when {
+                allOf {
+                    expression { env.TF_CHANGES != null }
+                    expression { env.PLAN_APPROVED == 'true' }
+                }
+            }
+            steps {
+                dir("${TF_DIR}") {
+                    script {
+                        // Display terraform outputs
+                        sh 'terraform output'
+                    }
+                }
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Clean up
+            dir("${TF_DIR}") {
+                sh 'rm -f tfplan tfplan.txt'
+            }
+        }
+        
+        success {
+            echo 'Terraform pipeline completed successfully!'
+            
+            // Send notification (customize based on your setup)
+            // slackSend(
+            //     color: 'good',
+            //     message: "✅ Terraform deployment successful for ${env.BRANCH_NAME} branch"
+            // )
+        }
+        
+        failure {
+            echo 'Terraform pipeline failed!'
+            
+            // Send notification
+            // slackSend(
+            //     color: 'danger',
+            //     message: "❌ Terraform deployment failed for ${env.BRANCH_NAME} branch"
+            // )
+        }
+        
+        aborted {
+            echo 'Terraform pipeline was aborted!'
+        }
+    }
+} || true",
                         returnStdout: true
                     ).trim()
                     
@@ -185,6 +385,7 @@ pipeline {
             steps {
                 dir("${TF_DIR}") {
                     script {
+                        // Display terraform outputs
                         sh 'terraform output'
                     }
                 }
@@ -194,6 +395,7 @@ pipeline {
     
     post {
         always {
+            // Clean up
             dir("${TF_DIR}") {
                 sh 'rm -f tfplan tfplan.txt'
             }
@@ -202,11 +404,21 @@ pipeline {
         success {
             echo 'Terraform pipeline completed successfully!'
             
+            // Send notification (customize based on your setup)
+            // slackSend(
+            //     color: 'good',
+            //     message: "✅ Terraform deployment successful for ${env.BRANCH_NAME} branch"
+            // )
         }
         
         failure {
             echo 'Terraform pipeline failed!'
-
+            
+            // Send notification
+            // slackSend(
+            //     color: 'danger',
+            //     message: "❌ Terraform deployment failed for ${env.BRANCH_NAME} branch"
+            // )
         }
         
         aborted {
