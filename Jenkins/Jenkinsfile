@@ -15,7 +15,7 @@ pipeline {
         TF_WORKSPACE = "${env.BRANCH_NAME == 'main' ? 'prod' : env.BRANCH_NAME}"
         
         // Directory containing Terraform files
-        TF_DIR = 'Terraform'
+        TF_DIR = 'terraform'
     }
     
 
