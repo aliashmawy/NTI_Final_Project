@@ -41,7 +41,7 @@ pipeline {
     //   }
       steps {
         dir("${TF_DIR}") {
-          sh 'terraform init'
+          sh 'terraform init -reconfigure'
         }
       }
     }
