@@ -43,6 +43,7 @@ pipeline {
         sh '''
           cd ${FRONT_DIR}
           npm install
+          chown -R $(whoami):$(whoami) node_modules
           rm -rf build
           rm -rf build node_modules/.cache
           npm run build
