@@ -57,9 +57,9 @@ pipeline {
     }
 
     stage('Terraform Plan') {
-      when {
-        expression { return env.TF_CHANGED == "true" }
-      }
+    //   when {
+    //     expression { return env.TF_CHANGED == "true" }
+    //   }
       steps {
         dir("${TF_DIR}") {
           sh 'terraform plan -out=tfplan'
