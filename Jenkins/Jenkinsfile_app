@@ -34,11 +34,6 @@ pipeline {
         checkout scm
       }
     }
-    stage('Confirm Node Version') {
-      steps {
-        sh 'node -v && npm -v'
-      }
-    }
 
     stage('Detect App Changes') {
       when {
@@ -53,9 +48,8 @@ pipeline {
       steps {
         sh '''
           cd ${FRONT_DIR}
+          rm -rf node_modules build
           npm install
-          chown -R $(whoami):$(whoami) node_modules
-          export NODE_OPTIONS=--openssl-legacy-provider
           npm run build
           cd ../../${BACK_DIR}
           npm ci --omit=dev
