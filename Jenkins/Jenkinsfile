@@ -9,7 +9,7 @@ pipeline {
     stage('Check for Terraform Changes') {
       steps {
         script {
-          def changes = sh(script: "git diff --name-only origin/main...HEAD", returnStdout: true).trim()
+          def changes = sh(script: "git diff --name-only HEAD~1 HEAD", returnStdout: true).trim()
           echo "Changed files:\n${changes}"
 
           if (changes.split('\n').any { it.startsWith("${TF_DIR}/") }) {
