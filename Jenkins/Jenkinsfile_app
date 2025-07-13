@@ -6,6 +6,11 @@ pipeline {
       args '-u root'
     }
   }
+  options {
+    cleanWs()              // Cleans the workspace before each build
+    disableConcurrentBuilds()  // Optional: prevent overlapping runs
+    // timeout(time: 10, unit: 'MINUTES') // Optional: global timeout
+  }
 
   environment {
     APP_DIR = 'Docker-Compose'
@@ -45,8 +50,7 @@ pipeline {
           cd ${FRONT_DIR}
           npm install
           chown -R $(whoami):$(whoami) node_modules
-          rm -rf build
-          rm -rf build node_modules/.cache
+          rm -rf node_modules build
           npm run build
           cd ../../${BACK_DIR}
           npm install
