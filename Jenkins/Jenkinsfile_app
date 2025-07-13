@@ -1,7 +1,7 @@
 pipeline {
   agent {
     docker {
-      image 'node:18'
+      image 'node:16'
       args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
@@ -43,7 +43,6 @@ pipeline {
           cd ${FRONT_DIR}
           npm install
           npm run build
-
           cd ../../${BACK_DIR}
           npm install
         '''
