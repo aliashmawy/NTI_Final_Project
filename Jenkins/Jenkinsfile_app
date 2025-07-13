@@ -6,11 +6,11 @@ pipeline {
       args '-u root'
     }
   }
-  options {
-    cleanWs()              // Cleans the workspace before each build
-    disableConcurrentBuilds()  // Optional: prevent overlapping runs
-    // timeout(time: 10, unit: 'MINUTES') // Optional: global timeout
-  }
+//   options {
+//     cleanWs()              // Cleans the workspace before each build
+//     disableConcurrentBuilds()  // Optional: prevent overlapping runs
+//     // timeout(time: 10, unit: 'MINUTES') // Optional: global timeout
+//   }
 
   environment {
     APP_DIR = 'Docker-Compose'
