@@ -12,12 +12,13 @@ pipeline {
     BACK_DIR = 'Docker-Compose/backend'
     DEPLOY_DIR = 'argocd'
     SONAR_PROJECT_KEY = 'your_sonar_project'
-    SONAR_TOKEN = credentials('sonarqube')
-    DOCKER_CRED = credentials('ecr-docker-cred')
-    GIT_CRED = credentials('github-cred1')
-    AWS_REGION = 'your-region'
-    FRONT_IMAGE = "your_ecr_repo/frontend:${BUILD_NUMBER}"
-    BACK_IMAGE = "your_ecr_repo/backend:${BUILD_NUMBER}"
+    SONAR_TOKEN = credentials('jenkins')
+    GIT_CRED = credentials('github-cred')
+    AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
+    AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+    AWS_REGION = 'us-east-1'
+    FRONT_IMAGE = "908442807176.dkr.ecr.us-east-1.amazonaws.com/frontend:${BUILD_NUMBER}"
+    BACK_IMAGE = "908442807176.dkr.ecr.us-east-1.amazonaws.com/backend:${BUILD_NUMBER}"
   }
 
   stages {
@@ -51,7 +52,7 @@ pipeline {
 
     stage('SonarQube Analysis') {
       steps {
-        withSonarQubeEnv('SonarQubeServerName') {
+        withSonarQubeEnv('sonarqube') {
           sh '''
             cd ${BACK_DIR}
             sonar-scanner \
