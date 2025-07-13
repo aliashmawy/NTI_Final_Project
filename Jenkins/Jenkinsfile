@@ -403,22 +403,11 @@ pipeline {
         
         success {
             echo 'Terraform pipeline completed successfully!'
-            
-            // Send notification (customize based on your setup)
-            // slackSend(
-            //     color: 'good',
-            //     message: "✅ Terraform deployment successful for ${env.BRANCH_NAME} branch"
-            // )
         }
         
         failure {
             echo 'Terraform pipeline failed!'
             
-            // Send notification
-            // slackSend(
-            //     color: 'danger',
-            //     message: "❌ Terraform deployment failed for ${env.BRANCH_NAME} branch"
-            // )
         }
         
         aborted {
