@@ -1,0 +1,130 @@
+pipeline {
+  agent {
+    docker {
+      image 'node:18'
+      args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
+    }
+  }
+
+  environment {
+    APP_DIR = 'Docker-Compose'
+    FRONT_DIR = 'Docker-Compose/frontend'
+    BACK_DIR = 'Docker-Compose/backend'
+    DEPLOY_DIR = 'argocd'
+    SONAR_PROJECT_KEY = 'your_sonar_project'
+    SONAR_TOKEN = credentials('sonarqube')
+    DOCKER_CRED = credentials('ecr-docker-cred')
+    GIT_CRED = credentials('github-cred1')
+    AWS_REGION = 'your-region'
+    FRONT_IMAGE = "your_ecr_repo/frontend:${BUILD_NUMBER}"
+    BACK_IMAGE = "your_ecr_repo/backend:${BUILD_NUMBER}"
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Detect App Changes') {
+      when {
+        changeset "${APP_DIR}/**"
+      }
+      steps {
+        echo "Detected changes in Docker-Compose folder"
+      }
+    }
+
+    stage('Install & Build Front/Back') {
+      steps {
+        sh '''
+          cd ${FRONT_DIR}
+          npm install
+          npm run build
+
+          cd ../../${BACK_DIR}
+          npm install
+        '''
+      }
+    }
+
+    stage('SonarQube Analysis') {
+      steps {
+        withSonarQubeEnv('SonarQubeServerName') {
+          sh '''
+            cd ${BACK_DIR}
+            sonar-scanner \
+              -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=$SONAR_HOST_URL \
+              -Dsonar.login=${SONAR_TOKEN}
+          '''
+        }
+      }
+    }
+
+    stage('Quality Gate') {
+      steps {
+        script {
+          timeout(time: 1, unit: 'MINUTES') {
+            def qualityGate = waitForQualityGate()
+            if (qualityGate.status != 'OK') {
+              error "Pipeline failed due to SonarQube Quality Gate: ${qualityGate.status}"
+            }
+          }
+        }
+      }
+    }
+
+    stage('Docker Build & Trivy Scan') {
+      steps {
+        sh '''
+          docker build -t ${FRONT_IMAGE} ${FRONT_DIR}
+          docker build -t ${BACK_IMAGE} ${BACK_DIR}
+
+          trivy image --exit-code 1 ${FRONT_IMAGE} || true
+          trivy image --exit-code 1 ${BACK_IMAGE} || true
+        '''
+      }
+    }
+
+    stage('Push to ECR') {
+      steps {
+        sh '''
+          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin $(echo ${FRONT_IMAGE} | cut -d/ -f1)
+          docker push ${FRONT_IMAGE}
+          docker push ${BACK_IMAGE}
+        '''
+      }
+    }
+
+    stage('Update ArgoCD Deployment YAMLs') {
+      steps {
+        sh '''
+          mkdir -p ${DEPLOY_DIR}
+          cp k8s/frontend-deployment.yaml ${DEPLOY_DIR}/frontend-deployment.yaml
+          cp k8s/backend-deployment.yaml ${DEPLOY_DIR}/backend-deployment.yaml
+
+          sed -i "s|image: .*/frontend:.*|image: ${FRONT_IMAGE}|" ${DEPLOY_DIR}/frontend-deployment.yaml
+          sed -i "s|image: .*/backend:.*|image: ${BACK_IMAGE}|" ${DEPLOY_DIR}/backend-deployment.yaml
+        '''
+      }
+    }
+
+    stage('Push Updated Manifests to GitHub') {
+      steps {
+        withCredentials([string(credentialsId: 'github-cred1', variable: 'GITHUB_TOKEN')]) {
+          sh '''
+            git config --global user.email "aliashmawy595@gmail.com"
+            git config --global user.name "ali ashmawy"
+
+            git add ${DEPLOY_DIR}/*.yaml
+            git commit -m "Update image tags to ${BUILD_NUMBER}"
+            git push https://${GITHUB_TOKEN}@github.com/aliashmawy/argocd_pull HEAD:main
+          '''
+        }
+      }
+    }
+  }
+}
