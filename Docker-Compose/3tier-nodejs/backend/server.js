@@ -13,7 +13,7 @@ const host = process.env.MONGO_HOST;
 
 
 // 🧠 Now construct the URI using the actual password
-const uri = `mongodb://master:${password}@${host}:27017/?tls=true&tlsCAFile=global-bundle.pem&retryWrites=false`;
+const uri = `mongodb://master:${password}@final-project-db-0-2025071213240880440000000c.cab2qcwmyvyz.us-east-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=global-bundle.pem&retryWrites=false`;
 // 🔁 Run the main app logic
 main().catch((err) => console.log("❌ Connection failed:", err));
 
