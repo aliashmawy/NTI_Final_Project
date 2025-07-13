@@ -17,6 +17,14 @@ pipeline {
         checkout scm
       }
     }
+    stage('Debug Workspace') {
+    steps {
+        dir("${TF_DIR}"){
+        sh 'ls -la'
+        sh 'pwd'
+    }
+    }
+}
     // stage('Check for Terraform Changes') {
     //   steps {
     //     script {
@@ -41,7 +49,7 @@ pipeline {
     //   }
       steps {
         dir("${TF_DIR}") {
-          sh 'terraform init -reconfigure'
+          sh 'terraform init'
         }
       }
     }
