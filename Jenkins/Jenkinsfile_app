@@ -54,7 +54,7 @@ pipeline {
           pwd
           echo "Contents of 3tier-nodejs:"
           ls -l Docker-Compose/3tier-nodejs
-          cd ${BACK_DIR}
+          cd ../../../${BACK_DIR}
           npm ci --omit=dev
         '''
       }
