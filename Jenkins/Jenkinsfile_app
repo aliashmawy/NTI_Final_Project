@@ -51,7 +51,7 @@ pipeline {
           rm -rf node_modules build
           npm install
           npm run build
-          cd ../../${BACK_DIR}
+          cd ${BACK_DIR}
           npm ci --omit=dev
         '''
       }
