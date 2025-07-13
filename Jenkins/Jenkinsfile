@@ -17,23 +17,23 @@ pipeline {
         checkout scm
       }
     }
-    stage('Check for Terraform Changes') {
-      steps {
-        script {
-          def changes = sh(script: "git diff --name-only HEAD~1 HEAD", returnStdout: true).trim()
-          echo "Changed files:\n${changes}"
+    // stage('Check for Terraform Changes') {
+    //   steps {
+    //     script {
+    //       def changes = sh(script: "git diff --name-only HEAD~1 HEAD", returnStdout: true).trim()
+    //       echo "Changed files:\n${changes}"
 
-          if (changes.split('\n').any { it.startsWith("${TF_DIR}/") }) {
-            echo "Terraform changes detected."
-            currentBuild.description = "Terraform apply triggered"
-            env.TF_CHANGED = "true"
-          } else {
-            echo "No Terraform changes. Skipping."
-            env.TF_CHANGED = "false"
-          }
-        }
-      }
-    }
+    //       if (changes.split('\n').any { it.startsWith("${TF_DIR}/") }) {
+    //         echo "Terraform changes detected."
+    //         currentBuild.description = "Terraform apply triggered"
+    //         env.TF_CHANGED = "true"
+    //       } else {
+    //         echo "No Terraform changes. Skipping."
+    //         env.TF_CHANGED = "false"
+    //       }
+    //     }
+    //   }
+    // }
 
     stage('Terraform Init') {
       when {
