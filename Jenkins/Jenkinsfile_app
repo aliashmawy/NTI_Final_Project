@@ -1,15 +1,6 @@
 pipeline {
-  agent {
-    docker {
-      image 'abhishekf5/maven-abhishek-docker-agent:v1'
-      args '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-    }
-  }
-//   options {
-//     cleanWs()              // Cleans the workspace before each build
-//     disableConcurrentBuilds()  // Optional: prevent overlapping runs
-//     // timeout(time: 10, unit: 'MINUTES') // Optional: global timeout
-//   }
+  agent any
+
 
   environment {
     APP_DIR = 'Docker-Compose'
