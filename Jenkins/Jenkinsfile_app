@@ -8,8 +8,8 @@ pipeline {
 
   environment {
     APP_DIR = 'Docker-Compose'
-    FRONT_DIR = 'Docker-Compose/frontend'
-    BACK_DIR = 'Docker-Compose/backend'
+    FRONT_DIR = 'Docker-Compose/3tier-nodejs/frontend'
+    BACK_DIR = 'Docker-Compose/3tier-nodejs/backend'
     DEPLOY_DIR = 'argocd'
     SONAR_PROJECT_KEY = 'your_sonar_project'
     SONAR_TOKEN = credentials('jenkins')
