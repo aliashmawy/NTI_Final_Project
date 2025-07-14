@@ -7,7 +7,7 @@ pipeline {
     FRONT_DIR = 'Docker-Compose/3tier-nodejs/frontend'
     BACK_DIR = 'Docker-Compose/3tier-nodejs/backend'
     DEPLOY_DIR = 'argocd'
-    K8S_DIR = 'Kubernetes manifests'
+    K8S_DIR = 'K8s_Manifest'
     SONAR_PROJECT_KEY = 'your_sonar_project'
     SONAR_TOKEN = credentials('jenkins')
     GIT_CRED = credentials('github-cred')
