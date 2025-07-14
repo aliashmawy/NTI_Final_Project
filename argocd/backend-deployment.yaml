@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
+  namespace: default
 spec:
   replicas: 2
   selector:
@@ -14,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: 908442807176.dkr.ecr.us-east-1.amazonaws.com/backend:46
+          image: 908442807176.dkr.ecr.us-east-1.amazonaws.com/backend:47
           ports:
             - containerPort: 3001
       #       - name: secrets-store-inline
