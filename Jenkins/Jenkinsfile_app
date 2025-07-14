@@ -102,9 +102,8 @@ pipeline {
     stage('Update ArgoCD Deployment YAMLs') {
       steps {
         sh '''
-          mkdir -p ${DEPLOY_DIR}
-          cp ${K8S_DIR}/frontend-deployment.yaml ${DEPLOY_DIR}/frontend-deployment.yaml
-          cp ${K8S_DIR}/backend-deployment.yaml ${DEPLOY_DIR}/backend-deployment.yaml
+          cp ${K8S_DIR}/frontend-deployment.yaml ${DEPLOY_DIR}/
+          cp ${K8S_DIR}/backend-deployment.yaml ${DEPLOY_DIR}/
 
           sed -i "s|image: .*/frontend:.*|image: ${FRONT_IMAGE}|" ${DEPLOY_DIR}/frontend-deployment.yaml
           sed -i "s|image: .*/backend:.*|image: ${BACK_IMAGE}|" ${DEPLOY_DIR}/backend-deployment.yaml
