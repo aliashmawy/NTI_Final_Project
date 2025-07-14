@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1beta1
+kind: Application
+metadata:
+  name: argocd-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/aliashmawy/NTI_Final_Project.git
+    targetRevision: HEAD
+    path: argocd
+  destination:
+    server: https://A6FA1F62E0DA8695E8DF073FA4FF905B.gr7.us-east-1.eks.amazonaws.com
+    namespace: default
