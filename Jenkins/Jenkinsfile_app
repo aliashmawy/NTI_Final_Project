@@ -113,14 +113,14 @@ pipeline {
 
     stage('Push Updated Manifests to GitHub') {
       steps {
-        withCredentials([string(credentialsId: 'github-cred1', variable: 'GITHUB_TOKEN')]) {
+        withCredentials([string(credentialsId: 'github-cred', variable: 'GITHUB_TOKEN')]) {
           sh '''
             git config --global user.email "aliashmawy595@gmail.com"
             git config --global user.name "ali ashmawy"
 
             git add ${DEPLOY_DIR}/*.yaml
             git commit -m "Update image tags to ${BUILD_NUMBER}"
-            git push https://${GITHUB_TOKEN}@github.com/aliashmawy/argocd_pull HEAD:main
+            git push https://${GITHUB_TOKEN}@github.com/aliashmawy/NTI_Final_Project/tree/main/argocd HEAD:main
           '''
         }
       }
