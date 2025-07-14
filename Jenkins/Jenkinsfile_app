@@ -120,7 +120,7 @@ pipeline {
 
             git add ${DEPLOY_DIR}/*.yaml
             git commit -m "Update image tags to ${BUILD_NUMBER}"
-            git push https://${GITHUB_TOKEN}@github.com/aliashmawy/NTI_Final_Project/argocd HEAD:main
+            git push https://${GITHUB_TOKEN}@github.com/aliashmawy/NTI_Final_Project.git HEAD:main
           '''
         }
       }
