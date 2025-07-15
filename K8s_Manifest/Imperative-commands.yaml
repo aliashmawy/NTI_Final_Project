@@ -1,4 +1,0 @@
-#Download Ingress controller Nginx to be able to install the ingress resource based on this controller
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml
-#exec into a pod
-kubectl exec -it pod-name -- sh

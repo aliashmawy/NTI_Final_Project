@@ -10,5 +10,5 @@ spec:
     targetRevision: HEAD
     path: argocd
   destination:
-    server: https://A6FA1F62E0DA8695E8DF073FA4FF905B.gr7.us-east-1.eks.amazonaws.com
+    server: https://kubernetes.default.svc
     namespace: default
