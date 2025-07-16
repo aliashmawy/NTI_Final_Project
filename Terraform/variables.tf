@@ -6,3 +6,9 @@ variable "default_tag" {
 # variable "db_password" {
 #   type = string
 # }
+
+variable "docdb_password" {
+  type = string
+  description = "The password for the database"
+  sensitive = true
+}
