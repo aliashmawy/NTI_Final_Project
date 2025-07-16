@@ -42,7 +42,7 @@ module "docdb" {
   engine_version = "5.0.0"
 
   master_username = "master"
-  master_password = var.
+  master_password = var.docdb_password
   apply_immediately = true
   skip_final_snapshot = true
 
