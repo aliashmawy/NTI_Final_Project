@@ -54,11 +54,13 @@ resource "aws_instance" "sonarqube" {
   tags = {
     Name = "sonarqube"
   }
+
+  user_data = file("${path.module}/sonarqube.sh")
 }
+
 
 
 
 output "sonarqube_public_ip" {
   value      = aws_instance.sonarqube.public_ip
 }
-#hello

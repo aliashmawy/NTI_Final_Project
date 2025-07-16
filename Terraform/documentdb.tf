@@ -43,6 +43,8 @@ module "docdb" {
 
   master_username = "master"
   master_password = "pa$$w0rd"
+  apply_immediately = true
+  skip_final_snapshot = true
 
   vpc_id                 = module.vpc.vpc_id
   subnet_ids             = module.vpc.private_subnets
