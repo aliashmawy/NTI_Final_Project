@@ -81,6 +81,3 @@ resource "aws_eip" "Jenkins_ip" {
 
 
 
-output "ec2_elastic_ip" {
-  value      = aws_eip.Jenkins_ip
-}
