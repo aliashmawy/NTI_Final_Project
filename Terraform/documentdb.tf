@@ -29,26 +29,32 @@ resource "aws_security_group" "docdb" {
   }
 }
 
-module "docdb" {
-  source  = "dare-global/documentdb/aws"
-  version = "1.1.0"
-
-  name_prefix = "final-project-db"
-
-  instance_class = "db.t3.medium"
-  instance_count = "1"
-
-  engine         = "docdb"
-  engine_version = "5.0.0"
-
-  master_username = "master"
-  master_password = var.docdb_password
-  apply_immediately = true
-  skip_final_snapshot = true
-
-  vpc_id                 = module.vpc.vpc_id
-  subnet_ids             = module.vpc.private_subnets
-  vpc_security_group_ids = [aws_security_group.docdb.id]
-
-
+module "documentdb_cluster" {
+  source = "cloudposse/documentdb-cluster/aws"
+  version = "0.30.1"
+  name                    = "docdb"
+  cluster_size            = 1
+  master_username         = "master"
+  master_password         = var.docdb_password
+  instance_class          = "db.t3.medium"
+  vpc_id                  = module.vpc.vpc_id
+  subnet_ids              = module.vpc.private_subnets
+  allowed_security_groups = [aws_security_group.docdb.id]
+  manage_master_user_password = true
 }
+
+# resource "aws_docdb_cluster" "docdb" {
+#   cluster_identifier      = "final-project-cluster"
+#   engine                  = "docdb"
+#   master_username         = "master"
+#   skip_final_snapshot     = true
+#   apply_immediately = true
+#   manage_master_user_password = true
+#   }
+
+# resource "aws_docdb_cluster_instance" "cluster_instances" {
+#   count              = 1
+#   identifier         = "docdb-cluster-demo-${count.index}"
+#   cluster_identifier = aws_docdb_cluster.docdb.id
+#   instance_class     = "db.t3.medium"
+# }

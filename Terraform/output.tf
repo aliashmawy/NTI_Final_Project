@@ -1,5 +1,5 @@
 output "nginx_endpoint" {
-    value = "http://${data.kubernetes_service.nginx.status.0.load_balancer.0.ingress.0.hostname}"
+    value = "http://${data.kubernetes_service.nginx_ingress_service.status.0.load_balancer.0.ingress.0.hostname}"
 }
 
 output "sonarqube_public_ip" {

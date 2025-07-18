@@ -5,7 +5,7 @@ resource "aws_security_group" "sonarqube-instance" {
   vpc_id      = module.vpc.vpc_id
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
+resource "aws_vpc_security_group_ingress_rule" "allow_http_sonarqube" {
   security_group_id = aws_security_group.sonarqube-instance.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
@@ -13,7 +13,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
   to_port           = 80
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_https_ipv4" {
+resource "aws_vpc_security_group_ingress_rule" "allow_https_sonarqube" {
   security_group_id = aws_security_group.sonarqube-instance.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 443
@@ -21,14 +21,14 @@ resource "aws_vpc_security_group_ingress_rule" "allow_https_ipv4" {
   to_port           = 443
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_8080_ipv4" {
+resource "aws_vpc_security_group_ingress_rule" "allow_8080_sonarqube" {
   security_group_id = aws_security_group.sonarqube-instance.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 8080
   ip_protocol       = "tcp"
   to_port           = 8080
 }
-resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ipv4" {
+resource "aws_vpc_security_group_ingress_rule" "allow_ssh_sonarqube" {
   security_group_id = aws_security_group.sonarqube-instance.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 22
@@ -36,7 +36,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh_ipv4" {
   to_port           = 22
 }
 
-resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
+resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_sonarqube" {
   security_group_id = aws_security_group.sonarqube-instance.id
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"

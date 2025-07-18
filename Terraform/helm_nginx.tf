@@ -10,5 +10,14 @@ resource "helm_release" "nginx-ingress-controller" {
 
 }
 
+data "kubernetes_service" "nginx_ingress_service" {
+  metadata {
+    name      = helm_release.nginx-ingress-controller.name
+    namespace = "default"
+  }
+
+  depends_on = [helm_release.nginx_ingress_controller]
+}
+
 
 
