@@ -7,6 +7,10 @@ resource "helm_release" "nginx-ingress-controller" {
     {
       name  = "service.type"
       value = "LoadBalancer"
+    },
+    {
+      name  = "service.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
+      value = "nlb"
     }
   ]
 
