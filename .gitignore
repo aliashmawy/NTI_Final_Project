@@ -27,5 +27,6 @@ global-bundle.pem
 # Ansible
 ansible.cfg
 
-#Personal Directories
+#Personal Directories and files
 notimportant/
+aws-kms.tf
