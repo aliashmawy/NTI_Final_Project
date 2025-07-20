@@ -1,0 +1,19 @@
+server:
+  configEnabled: true
+  additionalApplications:
+    - name: argocd-apps
+      namespace: argocd
+      destination:
+        namespace: default
+        server: https://kubernetes.default.svc
+      project: default
+      source:
+        repoURL: https://github.com/aliashmawy/NTI_Final_Project
+        targetRevision: HEAD
+        path: argocd
+        directory:
+          recurse: true
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
