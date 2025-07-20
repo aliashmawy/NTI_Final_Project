@@ -1,13 +1,3 @@
-data "aws_secretsmanager_secret" "doc-pass" {
-  name = "mongo_admin"
-  depends_on = [
-    aws_secretsmanager_secret.doc-pass
-  ]
-}
-
-data "aws_secretsmanager_secret_version" "secret" {
-  secret_id = data.aws_secretsmanager_secret.doc-pass.id
-}
 resource "aws_security_group" "docdb" {
   name        = "docdb-access"
   description = "Allow EKS nodes to access DocumentDB"
@@ -35,6 +25,7 @@ module "documentdb_cluster" {
   name                        = "docdb"
   cluster_size                = 1
   master_username             = "master"
+  master_password = aws_secretsmanager_secret_version.secret.secret_string
   instance_class              = "db.t3.medium"
   vpc_id                      = module.vpc.vpc_id
   subnet_ids                  = module.vpc.private_subnets
