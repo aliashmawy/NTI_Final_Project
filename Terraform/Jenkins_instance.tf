@@ -44,7 +44,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_jenkins" {
 }
 
 resource "aws_instance" "Jenkins" {
-  ami                         = "ami-020cba7c55df1f615"
+  ami                         = "ami-0fe3aab36c37201e0"
   instance_type               = "t3.medium"
   availability_zone           = "us-east-1a"
   key_name                    = "vockey3"
