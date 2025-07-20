@@ -1,10 +1,7 @@
-resource "random_password" "password" {
-  length           = 16
-}
 #Creating the secret itself with name and describtion
 resource "aws_secretsmanager_secret" "doc-pass" {
-  name                    = "mongo_admin"
-  description             = "mongo Admin password"
+  name        = "mongo_admin"
+  description = "mongo Admin password"
 
 }
 

@@ -4,7 +4,7 @@ variable "default_tag" {
   default     = "terraform_aws_rds_secrets_manager"
 }
 variable "db_password" {
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
   description = "master password for document db"
 }
