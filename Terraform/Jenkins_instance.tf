@@ -57,16 +57,16 @@ resource "aws_instance" "Jenkins" {
     Name = "Jenkins"
   }
 
-#   provisioner "local-exec" {
-#     environment = {
-#       ANSIBLE_CONFIG = "../Ansible/ansible.cfg"
-#     }
-#     command = <<EOT
-#     echo "Waiting 150 seconds for EC2 to initialize..."
-#     sleep 120
-#     ansible-playbook -i ../Ansible/inventory_Jenkins_aws_ec2.yaml ../Ansible/Jenkins-playbook.yaml
-# EOT
-#   }
+  #   provisioner "local-exec" {
+  #     environment = {
+  #       ANSIBLE_CONFIG = "../Ansible/ansible.cfg"
+  #     }
+  #     command = <<EOT
+  #     echo "Waiting 150 seconds for EC2 to initialize..."
+  #     sleep 120
+  #     ansible-playbook -i ../Ansible/inventory_Jenkins_aws_ec2.yaml ../Ansible/Jenkins-playbook.yaml
+  # EOT
+  #   }
 }
 resource "aws_eip" "Jenkins_ip" {
   instance = aws_instance.Jenkins.id

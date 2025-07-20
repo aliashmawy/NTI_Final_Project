@@ -52,3 +52,6 @@ resource "aws_eks_addon" "coredns" {
     module.eks_managed_node_group
   ]
 }
+data "aws_eks_cluster_auth" "eks" {
+  name = module.eks.cluster_name
+}
