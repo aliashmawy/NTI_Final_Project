@@ -1,6 +1,6 @@
 #Creating the secret itself with name and describtion
 resource "aws_secretsmanager_secret" "doc-pass" {
-  name        = "mongo_admin"
+  name        = "master_admin"
   description = "mongo Admin password"
 
 }
