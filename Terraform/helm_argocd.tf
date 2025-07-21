@@ -10,7 +10,7 @@ resource "helm_release" "argocd" {
   version    = "4.5.2"
   namespace = "argocd"
   create_namespace = true
-  values = [file("${path.module}/values.yaml")]
+  values = [file("${path.module}/values_argocd.yaml")]
   set = [
     {
       name  = "server.service.type"
