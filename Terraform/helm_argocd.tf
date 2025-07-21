@@ -3,14 +3,14 @@ data "aws_eks_cluster_auth" "main" {
 }
 
 resource "helm_release" "argocd" {
-  depends_on = [module.eks_managed_node_group]
-  name       = "argocd"
-  repository = "https://argoproj.github.io/argo-helm"
-  chart      = "argo-cd"
-  version    = "4.5.2"
-  namespace = "argocd"
+  depends_on       = [module.eks_managed_node_group]
+  name             = "argocd"
+  repository       = "https://argoproj.github.io/argo-helm"
+  chart            = "argo-cd"
+  version          = "4.5.2"
+  namespace        = "argocd"
   create_namespace = true
-  values = [file("${path.module}/values_argocd.yaml")]
+  values           = [file("${path.module}/values_argocd.yaml")]
   set = [
     {
       name  = "server.service.type"

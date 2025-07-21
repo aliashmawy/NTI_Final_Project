@@ -8,3 +8,8 @@ variable "db_password" {
   sensitive   = true
   description = "master password for document db"
 }
+
+variable "account_id" {
+  type        = string
+  description = "my account id"
+}
