@@ -8,5 +8,5 @@ module "documentdb_cluster" {
   instance_class          = "db.t3.medium"
   vpc_id                  = module.vpc.vpc_id
   subnet_ids              = module.vpc.private_subnets
-  allowed_security_groups = module.eks.node_security_group_id
+  allowed_security_groups = [module.eks.node_security_group_id]
 }
