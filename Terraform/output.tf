@@ -13,5 +13,5 @@ output "sonarqube_public_ip" {
 }
 
 output "ec2_elastic_ip" {
-  value = aws_eip.Jenkins_ip
+  value = aws_eip.Jenkins_ip.public_ip
 }
