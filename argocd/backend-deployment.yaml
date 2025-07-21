@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: 908442807176.dkr.ecr.us-east-1.amazonaws.com/backend:47
+          image: 908442807176.dkr.ecr.us-east-1.amazonaws.com/backend:52
           ports:
             - containerPort: 3001
       #       - name: secrets-store-inline
