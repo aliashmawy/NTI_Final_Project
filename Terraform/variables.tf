@@ -13,3 +13,26 @@ variable "account_id" {
   type        = string
   description = "my account id"
 }
+variable "key_id" {
+  type        = string
+  description = "kms key id for aws backup"
+}
+
+variable "db_name" {
+  type        = string
+  description = "name for db"
+}
+variable "eks_cluster_name" {
+  type        = string
+  description = "name for eks cluster"
+}
+
+variable "cluster_nodes_name" {
+  type        = string
+  description = "name for managed node group of eks"
+}
+
+variable "s3_log_bucket_name" {
+  type        = string
+  description = "name for access log s3 bucket"
+}

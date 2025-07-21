@@ -16,12 +16,12 @@ resource "aws_backup_plan" "Jenkins" {
 
 ###### KMS key ######
 data "aws_kms_key" "by_alias" {
-  key_id = "21cab0bf-e4c0-48d3-a708-ec18dc3761b1"
+  key_id = var.key_id
 }
 
 ###### AWS backup vault ######
 resource "aws_backup_vault" "Jenkins" {
-  name        = "example_backup_vault"
+  name        = "jenkins_backup_vault"
   kms_key_arn = data.aws_kms_key.by_alias.arn
 
 }
@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 resource "aws_iam_role" "backup_ec2" {
-  name               = "example"
+  name               = "backup_role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 

@@ -44,7 +44,7 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_jenkins" {
 }
 
 resource "aws_instance" "Jenkins" {
-  #Private AMI that has Jenkins, Terraform, Ansible, AWS
+  #Note this is a Private AMI that has Jenkins, Terraform, Ansible, AWS
   #Note to change the IP in /var/lib/jenkins/jenkins.model.JenkinsLocationConfiguration.xml
   ami                         = "ami-0fe3aab36c37201e0"
   instance_type               = "t3.medium"

@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "logs_prod" {
-  bucket = "final-project-access-log-bucket"
+  bucket = var.s3_log_bucket_name
 }
 
 resource "aws_s3_bucket_policy" "logs_prod_policy" {

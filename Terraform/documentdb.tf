@@ -1,7 +1,7 @@
 module "documentdb_cluster" {
   source                  = "cloudposse/documentdb-cluster/aws"
   version                 = "0.30.1"
-  name                    = "docdb"
+  name                    = var.db_name
   cluster_size            = 1
   master_username         = "master"
   master_password         = aws_secretsmanager_secret_version.secret.secret_string
