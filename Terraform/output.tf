@@ -19,3 +19,7 @@ output "ec2_elastic_ip" {
 output "argocd_initial_password" {
   value = data.external.argocd_password.result["password"]
 }
+
+output "grafana_initial_password" {
+  value = data.external.grafana_password.result["password"]
+}

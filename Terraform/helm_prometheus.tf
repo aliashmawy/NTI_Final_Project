@@ -19,3 +19,7 @@ resource "helm_release" "prometheus" {
     }
   ]
 }
+
+data "external" "grafana_password" {
+  program = ["bash", "${path.module}/grafana_pass.sh"]
+}
