@@ -16,7 +16,36 @@ resource "helm_release" "prometheus" {
     {
       name  = "server.persistentVolume.storageClass"
       value = "gp2"
+    },
+        {
+      name  = "alertmanager.config.receivers[0].name"
+      value = "slack-notifications"
+    },
+    {
+      name  = "alertmanager.config.receivers[0].slack_configs[0].channel"
+      value = "#all-aliprojects" # or your desired Slack channel
+    },
+    {
+      name  = "alertmanager.config.receivers[0].slack_configs[0].api_url"
+      value = "https://hooks.slack.com/services/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"
+    },
+    {
+      name  = "alertmanager.config.route.receiver"
+      value = "slack-notifications"
+    },
+    {
+      name  = "alertmanager.config.route.group_wait"
+      value = "30s"
+    },
+    {
+      name  = "alertmanager.config.route.group_interval"
+      value = "5m"
+    },
+    {
+      name  = "alertmanager.config.route.repeat_interval"
+      value = "3h"
     }
+
   ]
 }
 
