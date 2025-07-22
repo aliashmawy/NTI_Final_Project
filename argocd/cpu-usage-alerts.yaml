@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cpu-usage-alerts
+  namespace: monitoring
+spec:
+  groups:
+    - name: pod-cpu-alerts
+      rules:
+        - alert: HighCPUUsageFrontend
+          expr: |
+            rate(container_cpu_usage_seconds_total{namespace="default", pod=~".*frontend.*"}[2m]) > 0.8
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High CPU usage on frontend pod"
+            description: "CPU usage on pod {{ $labels.pod }} is above 80% for 2 minutes."
+
+        - alert: HighCPUUsageBackend
+          expr: |
+            rate(container_cpu_usage_seconds_total{namespace="default", pod=~".*backend.*"}[2m]) > 0.8
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High CPU usage on backend pod"
+            description: "CPU usage on pod {{ $labels.pod }} is above 80% for 2 minutes."
