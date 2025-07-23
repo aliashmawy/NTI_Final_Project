@@ -16,6 +16,4 @@ spec:
               app: frontend
       ports:
         - protocol: TCP
-          port: 3001
-        - protocol: TCP
           port: 443
