@@ -3,7 +3,7 @@ resource "helm_release" "prometheus" {
   namespace  = "monitoring"
   chart      = "kube-prometheus-stack"
   repository = "https://prometheus-community.github.io/helm-charts"
-  version    = "57.0.2" # optional: pick specific version
+  version    = "57.0.2"
 
   create_namespace = true
 
@@ -23,11 +23,11 @@ resource "helm_release" "prometheus" {
     },
     {
       name  = "alertmanager.config.receivers[0].slack_configs[0].channel"
-      value = "#all-aliprojects" # or your desired Slack channel
+      value = var.slack_channel
     },
     {
       name  = "alertmanager.config.receivers[0].slack_configs[0].api_url"
-      value = "https://hooks.slack.com/services/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"
+      value = var.slack_webhook
     },
     {
       name  = "alertmanager.config.route.receiver"

@@ -36,3 +36,13 @@ variable "s3_log_bucket_name" {
   type        = string
   description = "name for access log s3 bucket"
 }
+
+variable "slack_webhook" {
+  type = string
+  description = "incoming webhook URL for slack"
+}
+
+variable "slack_channel" {
+  type = string
+  description = "name of slack channel"
+}
