@@ -18,14 +18,11 @@ spec:
           image: 908442807176.dkr.ecr.us-east-1.amazonaws.com/backend:52
           ports:
             - containerPort: 3001
-      #       - name: secrets-store-inline
-      #         mountPath: "/mnt/secrets-store"
-      #         readOnly: true
-      # volumes:
-      #   - name: secrets-store-inline
-      #     csi:
-      #       driver: secrets-store.csi.k8s.io
-      #       readOnly: true
-      #       volumeAttributes:
-      #         secretProviderClass: "docdb-secret"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
 
