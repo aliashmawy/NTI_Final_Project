@@ -49,7 +49,7 @@ resource "aws_instance" "Jenkins" {
   ami                         = "ami-0fe3aab36c37201e0"
   instance_type               = "t3.medium"
   availability_zone           = "us-east-1a"
-  key_name                    = "vockey3"
+  key_name                    = var.key_name
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.Jenkins-instance.id]

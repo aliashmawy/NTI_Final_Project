@@ -46,3 +46,8 @@ variable "slack_channel" {
   type = string
   description = "name of slack channel"
 }
+
+variable "key_name" {
+  type = string
+  description = "name of private key"
+}

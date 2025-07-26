@@ -31,7 +31,7 @@ resource "aws_instance" "sonarqube" {
   ami                         = "ami-020cba7c55df1f615"
   instance_type               = "t2.medium"
   availability_zone           = "us-east-1a"
-  key_name                    = "vockey3"
+  key_name                    = var.key_name
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.sonarqube-instance.id]
