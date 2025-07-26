@@ -42,7 +42,7 @@ This directory contains Kubernetes manifests specifically tailored for use with 
 ### **cpu-usage-alerts.yaml**
 - Defines alerting rules for CPU usage, enabling proactive monitoring and notification if resource usage exceeds defined thresholds.
 
-![Prometheus Alert Testing](../Attachments/prometheus_alert_testing.png)
+![Prometheus Alert Testing](../Attachments/screenshots/prometheus_alert_testing.png)
 
 ### **service-frontend.yaml** & **service-backend.yaml**
 - Define Kubernetes Service resources to expose the frontend and backend deployments within the cluster.
@@ -62,4 +62,4 @@ This directory contains Kubernetes manifests specifically tailored for use with 
 
 Below is a screenshot of the ArgoCD application tree, which visually demonstrates how the application components are managed and deployed via ArgoCD:
 
-![ArgoCD Application Tree](../Attachments/argocd_tree.png)
+![ArgoCD Application Tree](../Attachments/screenshots/argocd_tree.png)
