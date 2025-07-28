@@ -14,7 +14,7 @@
 
 ## 🏗️ Infrastructure Architecture
 
-![Infrastructure Diagram](Attachments/infrastructure_diagram.gif)
+![Infrastructure Diagram](Attachments/diagrams/Infrastructure.gif)
 
 ---
 
@@ -55,4 +55,4 @@ This project showcases real-world skills in modern cloud-native infrastructure, 
 
 ## 🔄 CI/CD Pipeline Flow
 
-![Pipeline Diagram](Attachments/pipeline_diagram.gif)
+![Pipeline Diagram](Attachments/diagrams/Pipeline.gif)
