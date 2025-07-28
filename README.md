@@ -12,10 +12,16 @@
 
 ---
 
+## 🏗️ Infrastructure Architecture
+
+![Infrastructure Diagram](Attachments/infrastructure_diagram.gif)
+
+---
+
 ## 🏗️ Repository Structure
 
 - [Docker Compose (3-tier Node.js)](Docker-Compose/3tier-nodejs/README.md) – Local Docker Compose setup and documentation
-- [ArgoCD](argocd/readme.md) – ArgoCD Kubernetes manifests and GitOps deployment
+- [ArgoCD](argocd/README.md) – ArgoCD Kubernetes manifests and GitOps deployment
 - [Terraform](Terraform/README.md) – Infrastructure as Code for AWS, EKS, Helm, and more
 - [Ansible](Ansible/README.md) – Automation and configuration management
 - [Jenkins](Jenkins/README.md) – CI/CD pipeline definitions
@@ -44,3 +50,9 @@ Beyond application deployment, this project demonstrates a complete DevOps lifec
 - **NetworkPolicies, HPAs, and Alerts** are used to implement best practices in Kubernetes.
 
 This project showcases real-world skills in modern cloud-native infrastructure, automation, and application delivery — suitable for production-ready environments.
+
+---
+
+## 🔄 CI/CD Pipeline Flow
+
+![Pipeline Diagram](Attachments/pipeline_diagram.gif)
