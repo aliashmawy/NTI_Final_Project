@@ -28,6 +28,28 @@
 
 ---
 
+## 📝 Cloning & Setup Notes
+
+> **Important for CI/CD and Local Development:**
+>
+> - For the **backend Dockerfile build** (triggered by Jenkins):
+>   - The following files **must exist on the Jenkins server at `/opt/certs`**:
+>     - `.env` (environment variables for backend)
+>     - `global-bundle.pem` (certificate bundle for DocumentDB SSL connection)
+>   - The pipeline will copy these files into the backend build context.
+>
+> - The `.env` file **must include**:
+>   ```env
+>   MONGO_PASSWORD=your_documentdb_password
+>   MONGO_HOST=final-project-db-0-2025071213240880440000000c.cab2qcwmyvyz.us-east-1.docdb.amazonaws.com
+>   ```
+>   - `MONGO_PASSWORD`: The password for your DocumentDB user (from AWS Secrets Manager)
+>   - `MONGO_HOST`: The DocumentDB cluster endpoint URL (replace with your actual endpoint)
+>
+> - If these files are missing, the backend build will fail during the Jenkins pipeline.
+
+---
+
 ## 🧩 Introduction
 
 This project is a fully containerized **To-Do web application** deployed on a highly available and scalable **Kubernetes cluster** on AWS, using an end-to-end **GitOps-driven CI/CD pipeline**.

@@ -8,7 +8,7 @@ server:
         server: https://kubernetes.default.svc
       project: default
       source:
-        repoURL: https://github.com/aliashmawy/NTI_Final_Project
+        repoURL: https://github.com/aliashmawy/3tier-devops-aws
         targetRevision: HEAD
         path: argocd
         directory:
